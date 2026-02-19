@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALCASYS · Guía Administrativa</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Fraunces:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0f1f3d;
+    --blue: #1a4fd6;
+    --blue-mid: #2563eb;
+    --blue-light: #dbeafe;
+    --accent: #f59e0b;
+    --accent-soft: #fef3c7;
+    --surface: #f8faff;
+    --white: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --radius: 14px;
+    --shadow: 0 4px 24px rgba(15,31,61,0.08);
+    --shadow-hover: 0 8px 32px rgba(26,79,214,0.15);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    background: var(--navy);
+    color: white;
+    padding: 0 32px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+  .topbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .topbar-logo .dot {
+    width: 28px; height: 28px;
+    background: var(--blue-mid);
+    border-radius: 8px;
+    display: grid; place-items: center;
+    font-size: 14px;
+  }
+  .topbar-search {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 6px 14px;
+    gap: 8px;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.875rem;
+    width: 240px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .topbar-search:hover { background: rgba(255,255,255,0.15); }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: flex;
+    flex: 1;
+    max-height: calc(100vh - 56px);
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 220px;
+    background: var(--navy);
+    color: white;
+    padding: 24px 0;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  .sidebar-section {
+    padding: 0 16px 16px;
+  }
+  .sidebar-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    padding: 0 12px;
+    margin-bottom: 6px;
+  }
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.65);
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: 2px;
+  }
+  .sidebar-item:hover { background: rgba(255,255,255,0.07); color: white; }
+  .sidebar-item.active { background: var(--blue-mid); color: white; font-weight: 500; }
+  .sidebar-item .icon { font-size: 15px; width: 20px; text-align: center; }
+
+  /* ── MAIN ── */
+  .main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 40px 48px;
+    max-width: 960px;
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    margin-bottom: 36px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .breadcrumb span { color: var(--blue-mid); }
+  .page-title {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .page-subtitle {
+    font-size: 0.95rem;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .info-banner {
+    background: var(--blue-light);
+    border-left: 4px solid var(--blue-mid);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    font-size: 0.875rem;
+    color: #1e40af;
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    animation: fadeUp 0.5s 0.1s ease both;
+  }
+
+  /* ── SECTION HEADING ── */
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 40px 0 20px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .section-heading h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .section-badge {
+    background: var(--navy);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .section-divider {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── MODULE CARDS ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.4s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--blue-mid);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); border-color: #bfdbfe; }
+  .card:hover::before { transform: scaleX(1); }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .card-icon {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    display: grid; place-items: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .card-icon.blue { background: var(--blue-light); }
+  .card-icon.amber { background: var(--accent-soft); }
+  .card-icon.green { background: #dcfce7; }
+  .card-icon.purple { background: #ede9fe; }
+  .card-icon.rose { background: #fce7f3; }
+
+  .card-link {
+    font-size: 0.75rem;
+    color: var(--blue-mid);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .card:hover .card-link { opacity: 1; }
+
+  .card h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+  .card-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .card-items li {
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card-items li::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--blue-light);
+    border: 1.5px solid var(--blue-mid);
+    flex-shrink: 0;
+  }
+
+  /* ── QUICK LINKS ── */
+  .quick-links {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-top: 8px;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.4s ease both;
+  }
+  .quick-links h3 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .links-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .link-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--navy);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+  .link-chip:hover { background: var(--blue-light); border-color: #bfdbfe; color: var(--blue-mid); }
+
+  /* ── META BAR ── */
+  .meta-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: var(--muted);
+    animation: fadeUp 0.4s ease both;
+  }
+  .meta-bar .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 10px;
+  }
+  .meta-bar .actions {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+  }
+  .meta-bar .btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .meta-bar .btn:hover { background: var(--white); color: var(--text); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* stagger cards */
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.1s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.2s; }
+  .card:nth-child(5) { animation-delay: 0.25s; }
+  .card:nth-child(6) { animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-logo">
+    <div class="dot">🏛</div>
+    ALCASYS
+  </div>
+  <div class="topbar-search">
+    🔍 &nbsp;Buscar en la documentación...
+  </div>
+</nav>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Navegación</div>
+      <div class="sidebar-item"><span class="icon">🏠</span> Inicio</div>
+      <div class="sidebar-item"><span class="icon">📖</span> General</div>
+      <div class="sidebar-item active"><span class="icon">🏢</span> Administrativos</div>
+      <div class="sidebar-item"><span class="icon">👨‍🏫</span> Docentes</div>
+      <div class="sidebar-item"><span class="icon">👨‍👩‍👧</span> Padres</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">En esta página</div>
+      <div class="sidebar-item"><span class="icon">🏛️</span> Gestión Académica</div>
+      <div class="sidebar-item"><span class="icon">💼</span> Gestión Financiera</div>
+      <div class="sidebar-item"><span class="icon">🎓</span> Vida Estudiantil</div>
+      <div class="sidebar-item"><span class="icon">🔗</span> Enlaces Rápidos</div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div class="breadcrumb">Centro de Ayuda &rsaquo; <span>Personal Administrativo</span></div>
+      <h1 class="page-title">🏢 Guía para Personal Administrativo</h1>
+      <p class="page-subtitle">Bienvenido al <strong>Centro de Gestión Administrativa de ALCASYS</strong></p>
+      <div class="info-banner">
+        ℹ️
+        <span>Esta sección reúne los manuales operativos necesarios para la administración académica, financiera y de bienestar estudiantil.</span>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 1 -->
+    <div class="section-heading">
+      <span>🏛️</span>
+      <h2>1. Gestión Académico-Administrativa</h2>
+      <div class="section-badge">2 módulos</div>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon blue">📝</div>
+          <a class="card-link" href="#">Ir al módulo →</a>
+        </div>
+        <h3>Matrículas</h3>
+        <ul class="card-items">
+          <li>Inscripción de estudiantes</li>
+          <li>Ratificación de matrícula</li>
+          <li>Gestión de vacantes</li>
+          <li>Actualización de datos académicos</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon purple">📈</div>
+          <a class="card-link" href="#">Ir al módulo →</a>
+        </div>
+        <h3>Reportes de Calificaciones</h3>
+        <ul class="card-items">
+          <li>Generación de actas</li>
+          <li>Consolidados por aula</li>
+          <li>Cuadros de mérito</li>
+          <li>Exportación de reportes</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 2 -->
+    <div class="section-heading">
+      <span>💼</span>
+      <h2>2. Gestión Financiera y Contable</h2>
+      <div class="section-badge">2 módulos</div>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon amber">💰</div>
+          <a class="card-link" href="#">Ir al módulo →</a>
+        </div>
+        <h3>Cobranzas</h3>
+        <ul class="card-items">
+          <li>Control de pensiones</li>
+          <li>Emisión de recibos</li>
+          <li>Estados de cuenta</li>
+          <li>Seguimiento de pagos</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon green">📊</div>
+          <a class="card-link" href="#">Ir al módulo →</a>
+        </div>
+        <h3>Contabilidad</h3>
+        <ul class="card-items">
+          <li>Registro de ingresos y egresos</li>
+          <li>Cierre de caja</li>
+          <li>Conciliaciones</li>
+          <li>Reportes financieros</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 3 -->
+    <div class="section-heading">
+      <span>🎓</span>
+      <h2>3. Vida Estudiantil</h2>
+      <div class="section-badge">3 módulos</div>
+      <div class="section-divider"></div>
+    </div>
+
+    <p style="font-size:0.875rem; color:var(--muted); margin-bottom:20px;">Esta área permite la gestión de los procesos relacionados con el bienestar, seguimiento y control estudiantil.</p>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon rose">🏥</div>
+          <a class="card-link" href="#">Ir al módulo →</a>
+        </div>
+        <h3>Tópico de Enfermería</h3>
+        <ul class="card-items">
+          <li>Registro de atenciones médicas</li>
+          <li>Historial de incidencias</li>
+          <li>Seguimiento de casos</li>
+          <li>Control de medicamentos</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon purple">🧠</div>
+          <a class="card-link" href="#">Ir al módulo →</a>
+        </div>
+        <h3>Psicología</h3>
+        <ul class="card-items">
+          <li>Registro de historias psicológicas</li>
+          <li>Seguimiento de estudiantes</li>
+          <li>Reportes de intervención</li>
+          <li>Evaluaciones internas</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon blue">📚</div>
+          <a class="card-link" href="#">Ir al módulo →</a>
+        </div>
+        <h3>Lista de Útiles</h3>
+        <ul class="card-items">
+          <li>Registro de listas por grado</li>
+          <li>Control de recepción</li>
+          <li>Recepción detallada</li>
+          <li>Recepción general</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- QUICK LINKS -->
+    <div class="section-heading" style="margin-top:40px;">
+      <span>🔗</span>
+      <h2>Enlaces Rápidos</h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="quick-links">
+      <h3>Accesos directos</h3>
+      <div class="links-row">
+        <a class="link-chip" href="#">📘 Guía General del Sistema</a>
+        <a class="link-chip" href="#">👨‍🏫 Guía para Docentes</a>
+        <a class="link-chip" href="#">👨‍👩‍👧 Guía para Padres de Familia</a>
+      </div>
+    </div>
+
+    <!-- META -->
+    <div class="meta-bar">
+      <span class="tag">✏️ Última edición: hoy a las 12:08</span>
+      <span class="tag">👤 Administrador</span>
+      <div class="actions">
+        <button class="btn">🖨 Imprimir</button>
+        <button class="btn">↗ Compartir</button>
+        <button class="btn">💬 Ver discusión</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>
